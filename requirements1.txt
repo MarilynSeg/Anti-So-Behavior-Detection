@@ -1,4 +1,10 @@
-streamlit
-pandas
-scikit-learn
+altair
+joblib
 matplotlib
+numpy
+pandas
+seaborn
+streamlit
+gensim
+nltk
+scikit-learn
