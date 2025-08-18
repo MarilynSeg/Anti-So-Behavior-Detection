@@ -9,7 +9,12 @@ from pathlib import Path
 from typing import Optional, Dict, Any, Tuple, List
 
 import altair as alt
-import joblib
+try:
+    import joblib
+except ImportError:
+    import os
+    os.system("pip install joblib")
+    import joblib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -948,4 +953,5 @@ st.markdown("""
   📊 <strong>Toxic Comment Detection</strong> — Built by <strong>Group 4</strong> · University of Ghana
 </div>
 """, unsafe_allow_html=True)
+
 
