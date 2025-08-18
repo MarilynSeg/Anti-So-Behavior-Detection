@@ -4,17 +4,21 @@
 import os
 import re
 import string
+import subprocess
+import sys
 from collections import Counter
 from pathlib import Path
 from typing import Optional, Dict, Any, Tuple, List
 
 import altair as alt
+
+# Ensure joblib is available
 try:
     import joblib
 except ImportError:
-    import os
-    os.system("pip install joblib")
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "joblib"])
     import joblib
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -33,17 +37,19 @@ from sklearn.metrics import (
 )
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.feature_extraction.text import CountVectorizer
+
+# Ensure NLTK stopwords are downloaded
 import nltk
 nltk.download("stopwords")
 
-
-# Optional wordcloud
+# Ensure WordCloud is available
 try:
     from wordcloud import WordCloud
     WORDCLOUD_AVAILABLE = True
-except Exception:
-    WORDCLOUD_AVAILABLE = False
-
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "wordcloud"])
+    from wordcloud import WordCloud
+    WORDCLOUD_AVAILABLE = True
 
 # Kaggle credentials from Streamlit Secrets
 os.environ["KAGGLE_USERNAME"] = st.secrets["kaggle_username"]
@@ -953,5 +959,6 @@ st.markdown("""
   📊 <strong>Toxic Comment Detection</strong> — Built by <strong>Group 4</strong> · University of Ghana
 </div>
 """, unsafe_allow_html=True)
+
 
 
