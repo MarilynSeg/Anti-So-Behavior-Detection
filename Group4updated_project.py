@@ -1,7 +1,7 @@
 # Group4updated_sess.py
 # Toxic Comment Detection — stylish, interactive, leakage-free, with session_state + full evaluation
 # Python 3.9 compatible (uses typing.Optional, no union '|')
-
+import os
 import re
 import string
 from collections import Counter
@@ -28,6 +28,9 @@ from sklearn.metrics import (
 )
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.feature_extraction.text import CountVectorizer
+import nltk
+nltk.download("stopwords")
+
 
 # Optional wordcloud
 try:
@@ -35,6 +38,33 @@ try:
     WORDCLOUD_AVAILABLE = True
 except Exception:
     WORDCLOUD_AVAILABLE = False
+
+
+# Kaggle credentials from Streamlit Secrets
+os.environ["KAGGLE_USERNAME"] = st.secrets["kaggle_username"]
+os.environ["KAGGLE_KEY"] = st.secrets["kaggle_key"]
+
+
+# Dataset reference
+DATASET = "jigsaw-toxic-comment-classification-challenge"
+DATA_PATH = "./data"
+
+
+def download_dataset():
+    if not os.path.exists(DATA_PATH):
+        os.makedirs(DATA_PATH, exist_ok=True)
+        st.info("📥 Downloading dataset from Kaggle...")
+        os.system(f"kaggle competitions download -c {DATASET} -p {DATA_PATH}")
+        os.system(f"unzip -o {DATA_PATH}/*.zip -d {DATA_PATH}")
+        st.success("✅ Dataset downloaded and extracted.")
+
+# Ensure dataset is available
+download_dataset()
+
+# Paths to train/test
+TRAIN_PATH = f"{DATA_PATH}/train.csv"
+TEST_PATH = f"{DATA_PATH}/test.csv"
+
 
 # =========================
 # Page config (+ creative menu)
@@ -918,3 +948,4 @@ st.markdown("""
   📊 <strong>Toxic Comment Detection</strong> — Built by <strong>Group 4</strong> · University of Ghana
 </div>
 """, unsafe_allow_html=True)
+
