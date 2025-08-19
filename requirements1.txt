@@ -5,7 +5,6 @@ scikit-learn
 matplotlib
 seaborn
 altair
-joblib
 gensim
 nltk
 wordcloud
